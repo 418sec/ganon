@@ -32,4 +32,9 @@ describe("set", () => {
   test("Set a value with an invalid path", () => {
     expect(() => set(obj, 42, 1337)).toThrow("Path should be a string or array");
   });
+
+  test("Set a value with a prototype pollution", () => {
+    expect(set(obj, ["a", "b", "__proto__", "pollution"], "kitties are evil")).not.toHaveProperty("a.b.__proto__.pollution", "kitties are evil");
+    expect(set(obj, ["a", "b", "constructor"], "kitties are evil")).not.toHaveProperty("a.b.constructor", "kitties are evil");
+  });
 });
